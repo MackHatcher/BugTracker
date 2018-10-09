@@ -1,0 +1,312 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/admin-theme/bootstrap.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="~/Content/admin-theme/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/Content/admin-theme/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="~/Content/admin-theme/morris.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/Content/admin-theme/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/admin-theme/Custom.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+  <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Database Bug Tracker v1.0</a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 1</strong>
+                                        <span class="pull-right text-muted">40% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">40% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 2</strong>
+                                        <span class="pull-right text-muted">20% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                            <span class="sr-only">20% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 3</strong>
+                                        <span class="pull-right text-muted">60% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (warning)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 4</strong>
+                                        <span class="pull-right text-muted">80% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80% Complete (danger)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Tasks</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-tasks -->
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a href="@Url.Action("Login", "Account")"><i class="fa fa-user fa-fw"></i> Sign In</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Register", "Account")"><i class="fa fa-gear fa-fw"></i> Register</a>
+                            </li>
+                            <li class="divider"></li>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+                                    {@Html.AntiForgeryToken()
+                                    <div class="welcome">
+                                        <input type="submit" class="logout" value="Logout"/>
+                                    </div>
+                                }
+                            }
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "Manage")"><i class="fa fa-gear fa-fw"></i> Update Information</a>
+                            </li>
+                            <li class="divider"></li>
+                        }
+                    </ul>
+                
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-folder-open"></i> Demo Profiles<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html"><i class="fa fa-user"></i> Administrator</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html"><i class="fa fa-user"></i> Project Manager</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html"><i class="fa fa-user"></i> Developer</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html"><i class="fa fa-user"></i> Submitter</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-tags"></i> Ticket & Project Data<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder"></i> All Projects</a>
+                                    </li>
+                                }
+
+                                @if (User.IsInRole("Project Manager"))
+                                {
+                                    <li>
+
+                                        <a href="@Url.Action("Index", "Projects")"><i class="fa fa-file"></i> Your Projects</a>
+                                    </li>
+                                }
+
+                                @if (User.IsInRole("Developer"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index2", "Projects")"><i class="fa fa-file"></i> Your Projects</a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Submitter"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index2", "Projects")"><i class="fa fa-file"></i> Your Projects</a>
+                                    </li>
+                                }
+
+                                <li>
+                                    <a href="#"><i class="fa fa-tag"></i> Your Tickets</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-tags"></i> All Tickets</a>
+                                </li>
+
+                                <li>
+                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                    </ul>
+                                    <!-- /.nav-third-level -->
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="forms.html"><i class="fa fa-ticket"></i> Create Ticket</a>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-key"></i> Administrator Functions<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="@Url.Action("Index", "ApplicationUsers")"><i class="fa  fa-angle-double-right"></i> Change Roles</a>
+                                </li>
+                                <li>
+                                    <a href="login.html"><i class="fa  fa-angle-double-right"></i> Manage Types</a>
+                                </li>
+                                <li>
+                                    <a href="login.html"><i class="fa  fa-angle-double-right"></i> Manage Statuses</a>
+                                </li>
+                                <li>
+                                    <a href="login.html"><i class="fa  fa-angle-double-right"></i> Manage Priorities</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("AssignUsers", "Projects")"><i class="fa fa-bar-chart-o fa-fw"></i> Project Assignments</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+        
+    </div>
+    
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            
+        </div>
+
+        <!-- jQuery -->
+        <script src="~/Scripts/admin-js/jquery.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="~/Scripts/admin-js/bootstrap.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="~/Scripts/admin-js/metisMenu.min.js"></script>
+        <!-- Morris Charts JavaScript -->
+        <script src="~/Scripts/admin-js/raphael.min.js"></script>
+        <script src="~/Scripts/admin-js/morris.min.js"></script>
+        <script src="~/Scripts/admin-js/morris-data.js"></script>
+        <!-- Custom Theme JavaScript -->
+        <script src="~/Scripts/admin-js/sb-admin-2.min.js"></script>
+    @RenderSection("scripts", required: false)
+    </body>
+</html>

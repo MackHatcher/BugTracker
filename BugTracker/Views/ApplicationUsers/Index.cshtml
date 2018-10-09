@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BugTracker.Models.ApplicationUser> 
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            User Index
+        </h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <!-- Default box -->
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Change Role", "ChangeRole", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+        <!-- /.box -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
