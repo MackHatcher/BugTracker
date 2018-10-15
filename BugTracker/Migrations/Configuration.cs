@@ -1,6 +1,7 @@
 namespace BugTracker.Migrations
 {
     using BugTracker.Models;
+    using BugTracker.Models.Classes;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
@@ -133,6 +134,55 @@ namespace BugTracker.Migrations
             {
                 userManager.AddToRole(subUser.Id, "Submitter");
             }
+            //Ticket Priority
+            var lowPriority = new TicketPriority();
+            lowPriority.Id = 1;
+            lowPriority.Name = "Low";
+            context.TicketPriorities.AddOrUpdate(lowPriority);
+
+            var medPriority = new TicketPriority();
+            medPriority.Name = "Medium";
+            medPriority.Id = 2;
+            context.TicketPriorities.AddOrUpdate(medPriority);
+
+            var highPriority = new TicketPriority();
+            highPriority.Name = "High";
+            highPriority.Id = 3;
+            context.TicketPriorities.AddOrUpdate(highPriority);
+
+            var urgentPriority = new TicketPriority();
+            urgentPriority.Name = "Urgent";
+            urgentPriority.Id = 4;
+            context.TicketPriorities.AddOrUpdate(urgentPriority);
+
+            //Ticket Type
+            var bugFix = new TicketType();
+            bugFix.Name = "Bug Fix";
+            bugFix.Id = 1;
+            context.TicketTypes.AddOrUpdate(bugFix);
+            var softwareUpdate = new TicketType();
+            softwareUpdate.Name = "Software Update";
+            softwareUpdate.Id = 2;
+            context.TicketTypes.AddOrUpdate(softwareUpdate);
+
+            //Ticket Status
+            var notStarted = new TicketStatus();
+            notStarted.Name = "Not Started";
+            notStarted.Id = 1;
+            context.TicketStatuses.AddOrUpdate(notStarted);
+            var inProgress = new TicketStatus();
+            inProgress.Name = "In Progress";
+            inProgress.Id = 2;
+            context.TicketStatuses.AddOrUpdate(inProgress);
+            var onHold = new TicketStatus();
+            onHold.Name = "On Hold";
+            onHold.Id = 3;
+            context.TicketStatuses.AddOrUpdate(onHold);
+            var completed = new TicketStatus();
+            completed.Name = "Completed";
+            completed.Id = 4;
+            context.TicketStatuses.AddOrUpdate(completed);
+            
         }
     }
 }

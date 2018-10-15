@@ -1,0 +1,53 @@
+﻿@model BugTracker.Models.Classes.Comment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="comment-body">
+    <div class="comment-head">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p>
+                Comments:
+            </p>
+            <div>
+                <img class="avatar-placeholder" src="~/img/profile-placeholder.jpg" />
+                @using (Html.BeginForm("CreateComment", "Tickets", FormMethod.Post))
+                {
+                    <input type="hidden" name="id" value="@Model.TicketId" />
+                    <textarea name="body" class="comment-input" placeholder="add a public comment..."></textarea>
+                    <input type="submit" class="comment-submit" value="submit" />
+                }
+            </div>
+        }
+    </div>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="avatar">
+            <p>
+                @comment.Author.DisplayName posted at @comment.Created.ToString("dd/MM/yyyy HH:mm")
+            </p>
+
+            <img class="comment-avatar-placeholder" src="~/img/profile-placeholder.jpg" />
+
+        </div>
+        <div class="container">
+            <div class="dialogbox">
+                <div class="body">
+                    <span class="tip tip-left"></span>
+                    <div class="message">
+                        <p>
+                            @comment.Body
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

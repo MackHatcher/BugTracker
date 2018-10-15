@@ -1,0 +1,60 @@
+﻿@model BugTracker.Models.Ticket
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<div class="comment-body">
+    <div class="comment-head">
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                Comments:
+            </p>
+            <div>
+                <img class="avatar-placeholder" src="~/img/profile-placeholder.jpg" />
+                @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+                {
+                    <input type="hidden" name="id" value="@Model.ProjectId" />
+                    <textarea name="body" class="comment-input" placeholder="add a public comment..."></textarea>
+                    <input type="submit" class="comment-submit" value="submit" />
+                }
+            </div>
+        }
+    </div>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="avatar">
+            <p>
+                @comment.Author.FirstName posted at @comment.Created.ToString("dd/MM/yyyy HH:mm")
+            </p>
+
+            <img class="comment-avatar-placeholder" src="~/img/profile-placeholder.jpg" />
+
+        </div>
+        <div class="container">
+            <div class="dialogbox">
+                <div class="body">
+                    <span class="tip tip-left"></span>
+                    <div class="message">
+                        <p>
+                            @comment.Body
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>

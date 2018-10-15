@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using BugTracker.Models.Classes;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BugTracker.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
@@ -17,10 +19,19 @@ namespace BugTracker.Models
         public ApplicationUser()
         {
             Projects = new HashSet<Project>();
+            CreatedTickets = new HashSet<Ticket>();
+            AssignedTickets = new HashSet<Ticket>();
         }
 
-
         public virtual ICollection<Project> Projects { get; set; }
+
+        [InverseProperty("Assignee")]
+        public virtual ICollection<Ticket> AssignedTickets { get; set; }
+        [InverseProperty("Author")]
+        public virtual ICollection<Ticket> CreatedTickets { get; set; }
+        
+        
+        
         public string Name { get; internal set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -31,7 +42,7 @@ namespace BugTracker.Models
             return userIdentity;
         }
     }
-
+    
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -45,7 +56,13 @@ namespace BugTracker.Models
         }
 
         public System.Data.Entity.DbSet<BugTracker.Models.Classes.Project> Projects { get; set; }
+        public System.Data.Entity.DbSet<BugTracker.Models.Classes.TicketPriority> TicketPriorities { get; set; }
+        public System.Data.Entity.DbSet<BugTracker.Models.Classes.TicketStatus> TicketStatuses { get; set; }
+        public System.Data.Entity.DbSet<BugTracker.Models.Classes.TicketType> TicketTypes { get; set; }
 
+        public System.Data.Entity.DbSet<BugTracker.Models.Ticket> Tickets { get; set; }
         
+        public System.Data.Entity.DbSet<BugTracker.Models.Classes.Comment> Comments { get; set; }
+        public object TicketPriority { get; internal set; }
     }
 }

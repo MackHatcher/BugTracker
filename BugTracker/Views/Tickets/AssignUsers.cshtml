@@ -1,0 +1,19 @@
+﻿@model BugTracker.Models.TicketAssignViewModel
+@{
+    ViewBag.Title = "Assign Users";
+}
+
+<h2>AssignUsers</h2>
+<div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(p => p.Id)
+            
+                @Html.DropDownListFor(p => p.SelectedUser, Model.UserList)
+            
+            <input type="submit" value="Submit" />
+            }
+        
+
+    </div>

@@ -19,6 +19,7 @@
     <link href="~/Content/admin-theme/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <link href="~/Content/admin-theme/Custom.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,7 +28,7 @@
     <![endif]-->
 </head>
 <body>
-  <div id="wrapper">
+    <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -41,7 +42,7 @@
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
-                
+
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -144,7 +145,7 @@
                                     using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
                                     {@Html.AntiForgeryToken()
                                     <div class="welcome">
-                                        <input type="submit" class="logout" value="Logout"/>
+                                        <input type="submit" class="logout" value="Logout" />
                                     </div>
                                 }
                             }
@@ -155,8 +156,8 @@
                             <li class="divider"></li>
                         }
                     </ul>
-                
-                <!-- /.dropdown -->
+
+                    <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
             <div class="navbar-default sidebar" role="navigation">
@@ -197,7 +198,7 @@
                         <li>
                             <a href="#"><i class="fa fa-tags"></i> Ticket & Project Data<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                @if (User.IsInRole("Admin"))
+                                @if (User.Identity.IsAuthenticated)
                                 {
                                     <li>
                                         <a href="@Url.Action("Index", "Projects")"><i class="fa fa-folder"></i> All Projects</a>
@@ -221,16 +222,41 @@
                                 @if (User.IsInRole("Submitter"))
                                 {
                                     <li>
-                                        <a href="@Url.Action("Index2", "Projects")"><i class="fa fa-file"></i> Your Projects</a>
+                                        <a href="@Url.Action("Index3", "Projects")"><i class="fa fa-file"></i> Your Projects</a>
+                                    </li>
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index","Tickets")"><i class="fa fa-tags"></i> All Tickets</a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Developer"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index2","Tickets")"><i class="fa fa-tag"></i> Your Tickets</a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Submitter"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index3","Tickets")"><i class="fa fa-tag"></i> Your Tickets</a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Project Manager"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index4","Tickets")"><i class="fa fa-tag"></i> Active Tickets</a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Developers"))
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index4","Tickets")"><i class="fa fa-tag"></i> Active Tickets</a>
                                     </li>
                                 }
 
-                                <li>
-                                    <a href="#"><i class="fa fa-tag"></i> Your Tickets</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-tags"></i> All Tickets</a>
-                                </li>
+
 
                                 <li>
                                     <a href="#">Third Level <span class="fa arrow"></span></a>
@@ -253,10 +279,12 @@
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="forms.html"><i class="fa fa-ticket"></i> Create Ticket</a>
-                        </li>
-
+                        @if (User.IsInRole("Submitter"))
+                        {
+                            <li>
+                                <a href="@Url.Action("Create","Tickets")"><i class="fa fa-ticket"></i> Create Ticket</a>
+                            </li>
+                        }
                         <li>
                             <a href="#"><i class="fa fa-key"></i> Administrator Functions<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
@@ -285,28 +313,30 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
-        
+
     </div>
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/Scripts/admin-js/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/admin-js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/Scripts/admin-js/metisMenu.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="~/Scripts/admin-js/raphael.min.js"></script>
+    <script src="~/Scripts/admin-js/morris.min.js"></script>
+    <script src="~/Scripts/admin-js/morris-data.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Scripts/admin-js/sb-admin-2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
     
-
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            
-        </div>
-
-        <!-- jQuery -->
-        <script src="~/Scripts/admin-js/jquery.min.js"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script src="~/Scripts/admin-js/bootstrap.min.js"></script>
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="~/Scripts/admin-js/metisMenu.min.js"></script>
-        <!-- Morris Charts JavaScript -->
-        <script src="~/Scripts/admin-js/raphael.min.js"></script>
-        <script src="~/Scripts/admin-js/morris.min.js"></script>
-        <script src="~/Scripts/admin-js/morris-data.js"></script>
-        <!-- Custom Theme JavaScript -->
-        <script src="~/Scripts/admin-js/sb-admin-2.min.js"></script>
     @RenderSection("scripts", required: false)
-    </body>
+</body>
 </html>
