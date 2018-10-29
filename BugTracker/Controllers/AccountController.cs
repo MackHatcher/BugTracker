@@ -74,7 +74,7 @@ namespace BugTracker.Controllers
             {
                 return View(model);
             }
-
+            
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -93,6 +93,43 @@ namespace BugTracker.Controllers
             }
         }
 
+        [AllowAnonymous]
+        //GET: /Account/DemoLogin
+        public ActionResult DemoLoginAdmin()
+        {
+            
+            var user = db.Users.First(u => u.UserName == "admin@myblogapp.com");
+            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult DemoLoginManager()
+        {
+            var user = db.Users.First(u => u.UserName == "manager@myblogapp.com");
+            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult DemoLoginDeveloper()
+        {
+            var user = db.Users.First(u => u.UserName == "developer@myblogapp.com");
+            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ActionResult DemoLoginSubmitter()
+        {
+            var user = db.Users.First(u => u.UserName == "submitter@myblogapp.com");
+            SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+
+            return RedirectToAction("Index", "Home");
+        }
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -155,7 +192,14 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DisplayName = model.DisplayName
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

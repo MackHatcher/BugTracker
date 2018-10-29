@@ -12,11 +12,6 @@
 @model IEnumerable<BugTracker.Models.Ticket>
 
 
-@using (Html.BeginForm())
-{
-    <input type="text" name="searchString" class="search" placeholder="Search posts" value="@ViewBag.SearchString" />
-    <input type="submit" class="btn-primary-search" value="search" />
-}
 
 <h2>Index</h2>
 

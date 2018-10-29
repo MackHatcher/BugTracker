@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 using BugTracker.Models.Classes;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -40,6 +43,7 @@ namespace BugTracker.Controllers
         // GET: Comments/Create
         public ActionResult Create()
         {
+
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Name");
             return View();
@@ -50,18 +54,39 @@ namespace BugTracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,PostId,Body,AuthorId,Created,Updated,UpdateReason")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,TicketId,Body")] Comment comment)
         {
             if (ModelState.IsValid)
             {
+                comment.AuthorId = User.Identity.GetUserId();
+                comment.Created = DateTime.Now;
+
+                var dbTicket = db.Tickets.First(p => p.Id == comment.TicketId);
+
+                var user = db.Users.FirstOrDefault(p => p.Id == dbTicket.AssigneeId);
+                var userEmail = user.Email;
+
+                var body = "A comment has been added to a ticket (Ticket ID " + dbTicket.Id + ".). Please log in now.";
+                var from = "mack.hatcher1@outlook.com";
+                var email = new MailMessage(from,
+                                    ConfigurationManager.AppSettings["emailto"])
+                {
+                    Subject = "Comment added to ticket",
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                var svc = new PersonalEmail();
+                svc.Send(email);
+
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = comment.TicketId });
             }
 
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
             ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Name", comment.TicketId);
-            return View("Details");
+            return View(comment);
         }
 
         // GET: Comments/Edit/5
@@ -92,9 +117,9 @@ namespace BugTracker.Controllers
             {
                 var commentDb = db.Comments.Where(c => c.Id == comment.Id).FirstOrDefault();
 
-                commentDb.Updated = DateTime.Now;
+                
                 commentDb.Body = comment.Body;
-                commentDb.UpdateReason = comment.UpdateReason;
+                
 
                 
                 db.SaveChanges();

@@ -12,11 +12,6 @@
 
 <h2>Ticket Database</h2>
 
-@using (Html.BeginForm())
-{
-    <input type="text" name="searchString" class="search" placeholder="Search posts" value="@ViewBag.SearchString" />
-    <input type="submit" class="btn-primary-search" value="search" />
-}
 @if (User.IsInRole("Submitter"))
 {
     <p>
@@ -27,6 +22,9 @@
 <table id="mytable" class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Assignee)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -58,6 +56,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assignee.Name)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>

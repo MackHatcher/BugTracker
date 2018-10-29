@@ -4,3 +4,56 @@
 .assign {
     width: 200px;
 }
+
+.logout {
+    background-color:white;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-left: 22px;
+}
+
+#comment-head {
+    font-weight:bold;
+}
+
+.comment-avatar-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 10%;
+}
+
+.comment-input {
+    width: 300px;
+    height: 165px;
+    resize:none;
+    border-radius: 4px;
+    border: 1px solid lightgray;
+    
+}
+
+.comments {
+    width:445px;
+}
+
+#attachments {
+    left: 450px;
+    top: -220px;
+}
+
+.attachment-list {
+    margin-left: 460px;
+}
+
+#fileUpload {
+    width: 50%;
+}
+
+#upload-bar {
+    left:250px;
+    top: -195px;
+}
+
+h3 {
+    margin-top: 20px;
+}
+

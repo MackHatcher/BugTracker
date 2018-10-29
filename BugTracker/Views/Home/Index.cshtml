@@ -1,4 +1,98 @@
-﻿@{
+﻿@model BugTracker.Models.DashboardViewModel
+
+<link href="jquery.dataTables.min.css" />
+
+
+@{
     ViewBag.Title = "Home Page";
+}
+
+<section class="content-header">
+
+    <h2>
+        Dashboard
+    </h2>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p>Please log in to use this application.</p>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h3>
+            Projects You Are Assigned To
+        </h3>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Projects)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created.ToString("dd/MM/yyyy HH:mm"))
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Updated)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h3>
+            Tickets You Are Assigned To
+        </h3>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Ticket Type</th>
+                        <th>Ticket Priority</th>
+                        <th>Ticket Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tickets)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketTypeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketPriorityId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketStatusId)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</section>
+@section scripts {
+    <script>
+
+    $('#mytable').DataTable();
+    </script>
 }
 

@@ -123,6 +123,7 @@ namespace BugTracker.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        //GET: Assign Users
         [Authorize(Roles = "Admin,Project Manager")]
         public ActionResult AssignUsers(int id)
         {
@@ -140,6 +141,7 @@ namespace BugTracker.Controllers
 
             return View(model);
         }
+        //POST: Assign Users
         [Authorize(Roles = "Admin,Project Manager")]
         [HttpPost]
         public ActionResult AssignUsers(ProjectAssignViewModel model)

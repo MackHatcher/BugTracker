@@ -1,4 +1,7 @@
 ﻿@model BugTracker.Models.Ticket
+@using Microsoft.AspNet.Identity
+
+<link href="jquery.dataTables.min.css" />
 
 @{
     ViewBag.Title = "Details";
@@ -10,51 +13,135 @@
     ViewBag.Title = "Details";
 }
 
-
-
 <div class="comment-body">
     <div class="comment-head">
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") ||
+            (User.IsInRole("Project Manager") && Model.AssigneeId == User.Identity.GetUserId()) ||
+            (User.IsInRole("Developer") && Model.AssigneeId == User.Identity.GetUserId()) ||
+            (User.IsInRole("Submitter") && Model.AuthorId == User.Identity.GetUserId()))
         {
-            <p>
-                Comments:
+            <p id="comment-head">
+                Comments
             </p>
             <div>
-                <img class="avatar-placeholder" src="~/img/profile-placeholder.jpg" />
+
                 @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
                 {
-                    <input type="hidden" name="id" value="@Model.ProjectId" />
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="TicketId" value="@Model.Id" />
                     <textarea name="body" class="comment-input" placeholder="add a public comment..."></textarea>
-                    <input type="submit" class="comment-submit" value="submit" />
+                    <input type="submit" class="btn btn-default" value="Submit" />
                 }
             </div>
         }
     </div>
-    @foreach (var comment in Model.Comments)
-    {
-        <div class="avatar">
-            <p>
-                @comment.Author.FirstName posted at @comment.Created.ToString("dd/MM/yyyy HH:mm")
-            </p>
 
-            <img class="comment-avatar-placeholder" src="~/img/profile-placeholder.jpg" />
 
-        </div>
-        <div class="container">
-            <div class="dialogbox">
-                <div class="body">
-                    <span class="tip tip-left"></span>
-                    <div class="message">
-                        <p>
-                            @comment.Body
-                        </p>
+
+    <div class="attachment">
+        @if (User.IsInRole("Admin") ||
+            (User.IsInRole("Project Manager") && Model.AssigneeId == User.Identity.GetUserId()) ||
+            (User.IsInRole("Developer") && Model.AssigneeId == User.Identity.GetUserId()) ||
+            (User.IsInRole("Submitter") && Model.AuthorId == User.Identity.GetUserId()))
+        {
+            using (Html.BeginForm("PostAttachment", "Tickets", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Attachments, htmlAttributes: new { @class = "control-label col-md-2", @id = "attachments" })
+                    <div class="col-md-10" id="upload-bar">
+                        <input type="file" class="form-control" name="fileUpload" id="fileUpload" />
+                        <input type="hidden" name="TicketId" value="@Model.Id" />
+                        @Html.ValidationMessageFor(model => model.Attachments, "", new { @class = "text-danger" })
+                        <input type="submit" value="Attach" class="btn btn-default" />
+
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+
+    <div class="attachment-list">
+
+        @foreach (var attachment in Model.Attachments)
+        {
+
+            <div>
+                <p>
+                    @attachment.User.DisplayName included @attachment.FilePath at @attachment.Created.ToString("dd/MM/yyyy HH:mm") <a href="@attachment.FilePath" class="fas fa-file-download">Download</a>
+                </p>
+            </div>
+        }
+    </div>
+    <div class="comments">
+        @foreach (var comment in Model.Comments)
+        {
+            <div class="avatar">
+                <p>
+                    @comment.Author.DisplayName posted at @comment.Created.ToString("dd/MM/yyyy HH:mm")
+                </p>
+
+                <img class="comment-avatar-placeholder" src="~/Content/Images/profile-placeholder.jpg" />
+
+            </div>
+            <div class="container">
+                <div class="dialogbox">
+                    <div class="body">
+                        <span class="tip tip-left"></span>
+                        <div class="message">
+                            <p>
+                                @comment.Body
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+    
+
+    <h3>History of Changes</h3>
+    <table id="mytable" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Property Name
+                </th>
+                <th>
+                    Old Value
+                </th>
+                <th>
+                    New Value
+                </th>
+                <th>
+                    User Id
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var history in Model.Histories)
+            {
+                <tr>
+                    <td>@history.Property</td>
+                    <td>@history.OldValue</td>
+                    <td>@history.NewValue</td>
+                    <td>@history.User.DisplayName</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
     <p>
         @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
         @Html.ActionLink("Back to List", "Index")
     </p>
+
 </div>
+@section scripts {
+    <script>
+
+    $('#mytable').DataTable();
+    </script>
+}

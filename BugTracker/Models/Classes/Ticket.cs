@@ -8,6 +8,7 @@ namespace BugTracker.Models
 {
     public class Ticket
     {
+
         public string Name { get; set; }
         public int Id { get; set; }
         public int ProjectId { get; set; }
@@ -23,6 +24,8 @@ namespace BugTracker.Models
         public Ticket()
         {
             this.Comments = new HashSet<Comment>();
+            this.Attachments = new HashSet<TicketAttachment>();
+            this.Histories = new HashSet<TicketHistory>();
         }
 
         public virtual Project Project { get; set; }
@@ -32,7 +35,11 @@ namespace BugTracker.Models
         public virtual TicketPriority TicketPriority { get; set; }
         public virtual TicketStatus TicketStatus { get; set; }
 
+        public virtual ICollection<TicketAttachment> Attachments { get; set; }
+
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<TicketHistory> Histories { get; set; }
 
     }
 }

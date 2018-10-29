@@ -9,11 +9,6 @@
 
 }
 
-@using (Html.BeginForm())
-{
-    <input type="text" name="searchString" class="search" placeholder="Search posts" value="@ViewBag.SearchString" />
-    <input type="submit" class="btn-primary-search" value="search" />
-}
 
 <h2>Developer Ticket Index</h2>
 
@@ -72,6 +67,11 @@
             <td>
                 |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+
 
             </td>
         </tr>
